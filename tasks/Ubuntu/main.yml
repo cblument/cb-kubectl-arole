@@ -1,0 +1,20 @@
+---
+- name: Setup kubectl
+  block:
+    - name: Add repository key
+      apt_key:
+        id: 59FE0256827269DC81578F928B57C5C2836F4BEB
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+    # Weird that they only have packages for xenial but it seems to work ¯\_(ツ)_/¯
+    - name: Add repository
+      apt_repository:
+        repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
+
+    - name: Install package
+      apt:
+        name: kubectl
+        state: present
+        update_cache: yes
+        cache_valid_time: 84600
+  become: yes
